@@ -1,0 +1,524 @@
+/* =======================================================
+   MOOD PLAYER - MOBILE OPTIMIZED (ULTIMATE FINAL v4)
+   ======================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* --- 1. GİZLENECEK ÖĞELER (TEMİZLİK) --- */
+    #mobile-menu-toggle, 
+    #mobile-overlay, 
+    .sidebar,
+    #visualizer, 
+    #shuffle-btn, 
+    #prev-btn, 
+    #next-btn, 
+    #repeat-btn, 
+    .volume-controls, 
+    .time-info, 
+    .bar-extras,
+    .default-bar-icon,
+    .search-container, 
+    .user-text, 
+    .user-info h3, 
+    .user-info p,
+    /* Tablo Başlıklarını Gizle */
+    .song-list-table thead,
+    .song-row td:first-child, /* Sıra no */
+    .song-row td:nth-child(3) /* Eski sanatçı sütunu */ {
+        display: none !important;
+    }
+
+    /* --- 2. ANA DÜZEN AYARLARI --- */
+    body {
+        overflow-x: hidden; 
+    }
+
+    .main-content, #main-view {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px 15px 150px 15px !important; 
+    }
+
+    /* --- 3. MAKYAJ: ANA SAYFA GÖRÜNÜMÜ --- */
+    
+    /* A. Selamlama Yazısını Küçültme */
+    .dashboard-wrapper h1 {
+        font-size: 1.6rem !important;
+        margin-top: 10px !important;
+        letter-spacing: -0.5px;
+        line-height: 1.2;
+    }
+
+    .dashboard-wrapper p {
+        font-size: 0.9rem !important;
+        margin-bottom: 25px !important;
+        opacity: 0.7;
+    }
+
+    /* B. Mood Kartları (2x2 Düzen) */
+    .mood-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 25px !important;
+    }
+
+    .mood-card {
+        height: 80px !important; 
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 15px !important;
+    }
+    
+    .mood-card h3 { font-size: 1rem !important; margin: 0 !important; }
+    .mood-card i { font-size: 1.5rem !important; opacity: 0.8; }
+
+    /* C. Günün Önerisi (Hero Card) - TAŞMA SORUNU ÇÖZÜLDÜ ✅ */
+    .hero-card {
+        height: auto !important;
+        min-height: 120px !important;
+        margin-bottom: 20px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        padding: 15px !important;
+        background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2)) !important;
+        border: 1px solid rgba(255,255,255,0.05);
+        overflow: hidden; /* Taşmayı engelle */
+    }
+
+    /* Resim (Solda) */
+    .hero-img {
+        position: relative !important;
+        width: 100px !important;
+        min-width: 100px !important; /* Küçülmesini engelle */
+        height: 100px !important;
+        border-radius: 8px !important;
+        margin-right: 15px !important;
+        object-fit: cover !important;
+        mask-image: none !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    /* Yazı Alanı (Sağda) */
+    .hero-content {
+        position: relative !important;
+        inset: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        text-align: left !important;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        min-width: 0; /* Flex içinde text-overflow için şart */
+    }
+
+    .hero-badge {
+        position: relative !important;
+        top: auto !important; left: auto !important;
+        margin-bottom: 5px !important;
+        font-size: 0.6rem !important;
+        padding: 2px 6px !important;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Şarkı Başlığı (Uzun isimler kesilsin) */
+    .hero-content h2 {
+        font-size: 1.1rem !important;
+        margin: 0 0 4px 0 !important;
+        line-height: 1.2 !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* 2 satırla sınırla */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    .hero-content p {
+        font-size: 0.8rem !important;
+        margin-bottom: 10px !important;
+        color: #aaa !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+
+    .hero-btn {
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        width: auto !important;
+        height: auto !important;
+        background: #fff !important;
+        color: #000 !important;
+        border-radius: 20px !important;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .hero-btn i { font-size: 0.8rem !important; }
+
+    /* D. Hızlı İşlemler (3'lü Sıra) */
+/* --- HIZLI İŞLEMLER (MOBİL DÜZELTME) --- */
+    
+    .quick-actions-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .upload-box {
+        height: 90px !important;
+        padding: 10px !important;
+        
+        /* ÖNEMLİ DÜZELTME BURADA: */
+        /* "!important" ifadesini kaldırdık ki JS ile renk değişebilsin */
+        background: rgba(255,255,255,0.05); 
+        
+        border-radius: 12px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .upload-box i { font-size: 1.5rem !important; margin-bottom: 5px !important; }
+    .upload-box h3 { font-size: 0.7rem !important; }
+
+    /* E. Tozlu Raflar */
+    .dusty-card {
+        padding: 10px !important;
+        height: auto !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    .dusty-img { width: 60px !important; height: 60px !important; }
+    .dusty-info h3 { font-size: 1rem !important; }
+
+
+    /* --- 4. LİSTE GÖRÜNÜMÜ & ACTION SHEET --- */
+    
+    /* Liste Başlığı (Header) */
+    .playlist-view-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        margin-bottom: 20px !important;
+    }
+    .playlist-cover-art {
+        width: 160px !important;
+        height: 160px !important;
+        margin-right: 0 !important;
+        margin-bottom: 15px !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .playlist-cover-art div, .playlist-cover-art img {
+        width: 100% !important; height: 100% !important; border-radius: 10px !important;
+    }
+    .playlist-actions {
+        justify-content: center !important;
+        gap: 20px !important;
+        margin-bottom: 25px !important;
+    }
+    .play-all-btn {
+        width: 60px !important; height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+
+    /* Şarkı Listesi (Modern Liste) */
+    .song-list-table, .song-list-table tbody {
+        display: block !important; width: 100% !important;
+    }
+    
+    .song-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 12px 0 !important;
+        border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+        width: 100% !important;
+    }
+
+    .song-title-cell {
+        display: flex !important;
+        align-items: center !important;
+        flex: 1 !important;
+        overflow: hidden;
+    }
+    .song-title-cell img {
+        width: 50px !important; height: 50px !important;
+        border-radius: 6px !important; margin-right: 15px !important; object-fit: cover;
+    }
+
+    /* İsim ve Sanatçı Alt Alta */
+    .mobile-song-details {
+        display: flex; flex-direction: column; justify-content: center; overflow: hidden;
+    }
+    .mobile-song-title {
+        font-size: 1rem; color: white; font-weight: 500;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .mobile-song-artist {
+        font-size: 0.85rem; color: #aaa; margin-top: 3px;
+    }
+
+    /* --- Action Sheet (Z-INDEX DÜZELTİLDİ!) --- */
+    .mobile-action-sheet-overlay {
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%;
+        background: rgba(0,0,0,0.6); 
+        /* app.js'deki playerBar z-index'i 2147483647 olduğu için, bunu da maksimuma çekip !important ekledik */
+        z-index: 2147483647 !important; 
+        display: flex; 
+        align-items: flex-end; 
+        opacity: 0; 
+        pointer-events: none; 
+        transition: opacity 0.3s;
+    }
+    .mobile-action-sheet-overlay.active { opacity: 1; pointer-events: auto; }
+    .mobile-action-sheet {
+        width: 100%; background: #1e1e1e;
+        border-top-left-radius: 20px; border-top-right-radius: 20px;
+        padding: 25px 20px 40px 20px;
+        transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .mobile-action-sheet-overlay.active .mobile-action-sheet { transform: translateY(0); }
+    
+    .sheet-header {
+        display: flex; align-items: center; margin-bottom: 25px;
+        padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .sheet-img { width: 50px; height: 50px; border-radius: 6px; margin-right: 15px; }
+    .sheet-info h3 { margin: 0; font-size: 1rem; color: #fff; }
+    .sheet-info p { margin: 0; font-size: 0.8rem; color: #aaa; }
+    .sheet-action {
+        display: flex; align-items: center; width: 100%; padding: 15px 0;
+        background: none; border: none; color: #fff; font-size: 1rem; cursor: pointer; text-align: left;
+    }
+    .sheet-action i { width: 30px; font-size: 1.2rem; margin-right: 10px; text-align: center; }
+    .sheet-action.danger { color: #e74c3c; }
+
+
+    /* --- 5. MOBİL ALT NAVİGASYON --- */
+    .mobile-bottom-nav {
+        display: flex; position: fixed; bottom: 0; left: 0; width: 100%; height: 65px;
+        background: rgba(0, 0, 0, 0.98); border-top: 1px solid rgba(255,255,255,0.1);
+        z-index: 2000; justify-content: space-around; align-items: center; padding-bottom: 5px;
+    }
+    .nav-item {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: #888; font-size: 0.7rem; gap: 6px; cursor: pointer; width: 100%; height: 100%; transition: 0.3s;
+    }
+    .nav-item i { font-size: 1.4rem; }
+    .nav-item.active { color: #fff; }
+    .nav-item.active i { color: var(--primary-color, #5c20f7); }
+
+    /* --- 6. PLAYER BAR --- */
+    .music-player-bar {
+        position: fixed; bottom: 70px; left: 8px; width: calc(100% - 16px); height: 58px;
+        background-color: #222; border-radius: 8px; padding: 0 10px;
+        display: flex; align-items: center; justify-content: space-between; z-index: 1900;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);
+    }
+    .bar-song-info { flex: 1; display: flex; align-items: center; overflow: hidden; margin-right: 10px; }
+    .bar-img { width: 42px !important; height: 42px !important; border-radius: 4px !important; margin-right: 10px !important; flex-shrink: 0; overflow: hidden; }
+    .bar-img img { width: 100%; height: 100%; object-fit: cover; }
+    .bar-details { display: flex; flex-direction: column; justify-content: center; overflow: hidden; min-width: 0; }
+    #bar-title { font-size: 0.9rem !important; font-weight: 600; color: #fff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #bar-artist { font-size: 0.75rem !important; color: #b3b3b3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #bar-like-btn { display: block !important; background: none; border: none; color: #1db954; font-size: 1.2rem; padding: 0 0 0 10px; }
+    .bar-controls { width: auto !important; }
+    .control-buttons { display: flex; align-items: center; gap: 15px; }
+    #add-to-playlist-btn { display: block !important; background: none; border: none; color: #b3b3b3; font-size: 1.2rem; padding: 0; }
+    #play-btn { background: none; border: none; color: white; font-size: 1.8rem !important; padding: 0; display: flex; align-items: center; }
+    .progress-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: rgba(255,255,255,0.1); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; overflow: hidden; }
+    #current-time, #duration { display: none !important; }
+    #seek-bar { position: absolute; top: 0; left: 0; width: 100%; height: 100% !important; background: transparent; cursor: pointer; opacity: 1; margin: 0; -webkit-appearance: none; }
+    #seek-bar::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 0; opacity: 0; }
+    #seek-bar::-moz-range-thumb { width: 0; height: 0; opacity: 0; border: none; }
+
+    /* --- 7. ÜST BAR --- */
+    .top-bar { display: flex !important; justify-content: space-between !important; align-items: center; width: 100%; height: 50px; padding: 5px 0; margin-bottom: 5px; }
+    .mobile-settings-btn { display: block !important; background: transparent; border: none; color: #b3b3b3; font-size: 1.4rem; cursor: pointer; padding: 5px; }
+    .user-info { background: transparent !important; padding: 0 !important; margin: 0 !important; display: flex; align-items: center; justify-content: flex-end; }
+    .user-info img { width: 34px !important; height: 34px !important; border-radius: 50% !important; border: 1px solid rgba(255,255,255,0.2); object-fit: cover; }
+
+    /* --- 8. ARAMA --- */
+    .mobile-search-header { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; color: #fff; }
+    .mobile-search-input { width: 100%; padding: 12px 40px 12px 15px; border-radius: 8px; border: none; background: #fff; color: #000; font-size: 1rem; }
+    .mobile-search-icon { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #333; font-size: 1.2rem; }
+    .browse-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .browse-card { height: 100px; border-radius: 8px; padding: 15px; position: relative; overflow: hidden; cursor: pointer; }
+    .browse-card h3 { font-size: 1.1rem; color: #fff; margin: 0; position: relative; z-index: 2; }
+    .browse-card i { position: absolute; bottom: -10px; right: -10px; font-size: 4rem; transform: rotate(25deg); opacity: 0.3; color: #fff; z-index: 1; }
+
+    /* 1. "YÜKLE" KUTUSUNU BÜYÜT (BANNER YAP) */
+    .quick-actions-grid .upload-box:first-child {
+        /* Baştan sona tüm sütunları kapla (grid-column: 1 / -1) */
+        grid-column: 1 / -1 !important;
+        
+        /* Kare zorunluluğunu kaldır */
+        aspect-ratio: auto !important;
+        height: 100px !important; /* Sabit dikdörtgen yükseklik */
+        
+        /* İkon ve yazıyı yan yana al (Daha şık durur) */
+        flex-direction: row !important;
+        gap: 20px !important;
+        
+        background: rgba(255,255,255,0.08) !important;
+        border: 2px dashed rgba(255,255,255,0.3) !important;
+    }
+
+    /* Banner içindeki ikon ve yazı ayarları */
+    .quick-actions-grid .upload-box:first-child i {
+        margin-bottom: 0 !important;
+        font-size: 2.2rem !important;
+    }
+    .quick-actions-grid .upload-box:first-child h3 {
+        font-size: 1rem !important;
+    }
+
+
+    /* 2. AKTİF MOD RENK SORUNU ÇÖZÜMÜ (CHILL MOD VS.) */
+    
+    /* Eğer bir kutuda 'active' class'ı varsa arka planı cam göbeği yap */
+    /* !important kullanarak temel gri rengi eziyoruz */
+    .upload-box.active {
+        background: #00d2d3 !important; /* Parlak Cyan rengi */
+        border-color: transparent !important;
+        box-shadow: 0 0 15px rgba(0, 210, 211, 0.4) !important;
+    }
+
+    /* Aktif kutunun içindeki yazı ve ikonu siyah yap (Okunabilirlik için) */
+    .upload-box.active i,
+    .upload-box.active h3 {
+        color: #000 !important;
+    }
+
+    /* =========================================
+       PROFİL SAYFASI MOBİL REVİZYONU 👤
+       ========================================= */
+
+    /* 1. Profil Başlığı (Kartvizit Modu) */
+    .profile-container {
+        padding: 10px !important;
+        padding-bottom: 120px !important; /* Player payı */
+    }
+
+    .profile-header {
+        flex-direction: column !important; /* Alt alta diz */
+        text-align: center !important;
+        padding: 25px 15px !important;
+        gap: 15px !important;
+        background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%) !important;
+        border: 1px solid rgba(255,255,255,0.05) !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Avatarı Ortala ve Büyüt */
+    .profile-big-avatar {
+        width: 100px !important;
+        height: 100px !important;
+        margin: 0 auto !important; /* Ortala */
+        border-width: 3px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    }
+
+    /* İsim ve Tarih */
+    .profile-header h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 5px !important;
+    }
+
+    .profile-header p {
+        justify-content: center !important; /* İkonu ve yazıyı ortala */
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        font-size: 0.85rem !important;
+        opacity: 0.8 !important;
+    }
+
+    /* İmza / Motto Kutusu */
+    .signature-quote-box {
+        background: rgba(0,0,0,0.3) !important;
+        padding: 12px 15px !important;
+        border-radius: 12px !important;
+        margin-top: 15px !important;
+        width: 100% !important;
+        border: 1px dashed rgba(255,255,255,0.15) !important;
+    }
+
+    .signature-text {
+        font-size: 0.95rem !important;
+        font-style: italic !important;
+        color: #ddd !important;
+    }
+
+    /* 2. İstatistikler (2x2 Grid Yapısı) */
+    .profile-stats-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Yan yana 2 eşit parça */
+        gap: 10px !important;
+    }
+
+    .stat-card {
+        flex-direction: column !important; /* İkon üstte, yazı altta */
+        text-align: center !important;
+        padding: 15px 10px !important;
+        gap: 10px !important;
+        background: rgba(255,255,255,0.03) !important;
+    }
+
+    .stat-icon-box {
+        margin: 0 auto !important; /* İkonu ortala */
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .stat-card h2 { font-size: 1.4rem !important; }
+    .stat-card span { font-size: 0.75rem !important; }
+
+    /* 3. Ruh Hali Takvimi (Daha Büyük Pikseller) */
+    .mood-tracker-container {
+        padding: 15px !important;
+        background: rgba(255,255,255,0.02) !important;
+    }
+
+    .mood-grid-pixels {
+        /* Mobilde daha büyük kutucuklar */
+        display: grid !important;
+        /* Haftanın 7 günü gibi yan yana 7 tane sığdır veya ekrana yay */
+        grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)) !important; 
+        gap: 6px !important;
+    }
+
+    .pixel {
+        border-radius: 6px !important; /* Biraz daha yuvarlak */
+        aspect-ratio: 1 / 1 !important; /* Tam kare */
+    }
+
+    /* 4. Rozetler (Yatay Kaydırma veya Sıkı Grid) */
+    .badge-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Yan yana 2 rozet */
+        gap: 10px !important;
+    }
+
+    .badge-item {
+        font-size: 0.75rem !important;
+        justify-content: center !important;
+        padding: 8px !important;
+        text-align: center !important;
+    }
+}

@@ -1,0 +1,175 @@
+/* =======================================================
+   PC (MASAÜSTÜ) GÖRÜNÜMÜ İÇİN DÜZELTMELER (FİNAL) 🖥️
+   (Mobil stiller buraya bulaşmasın!)
+   ======================================================= */
+
+/* Sadece 769px ve üzeri ekranlarda (Tablet yatay ve Bilgisayar) çalışır */
+@media screen and (min-width: 769px) {
+    
+    /* 1. MOBİL PARÇALARI GİZLE */
+    .mobile-bottom-nav,       /* Alt navigasyon çubuğu */
+    .mobile-settings-btn,     /* Sol üstteki çark */
+    .mobile-search-header,    /* "Ara" başlığı */
+    .mobile-search-input-wrapper, /* Mobil arama kutusu */
+    .mobile-song-details,     /* Mobildeki şarkı detay yapısı */
+    .more-options-btn,        /* Üç nokta butonu */
+    #mobile-action-sheet-overlay /* Aşağıdan çıkan menü */ {
+        display: none !important;
+    }
+
+    /* 2. MASAÜSTÜ PARÇALARINI GERİ GETİR (Zorla Göster) */
+    .sidebar {
+        display: flex !important; /* Yan menüyü geri getir */
+        position: relative !important; /* Eski yerine oturt */
+        height: 100vh !important;
+        width: 260px !important;
+    }
+
+    .search-container {
+        display: flex !important; /* Üst arama çubuğunu getir */
+    }
+
+    /* Profil Bilgilerini Geri Getir */
+    .user-text, 
+    .user-info h3, 
+    .user-info p {
+        display: block !important; 
+    }
+    
+    .user-info {
+        background: rgba(255, 255, 255, 0.05) !important;
+        padding: 8px 15px !important;
+        margin: 0 !important;
+    }
+
+    .user-info img {
+        width: 45px !important;
+        height: 45px !important;
+        border: 2px solid var(--primary-color) !important;
+    }
+
+    /* 3. PLAYER BAR DÜZENİ (Eski Haline Döndür) */
+    .music-player-bar {
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 90px !important; /* Yüksekliği geri ver */
+        padding: 0 30px !important;
+        background: rgba(15, 12, 41, 0.95) !important;
+        border-radius: 0 !important; /* Köşeleri düzelt */
+        border: none !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+    }
+
+    /* Resim Boyutu */
+    .bar-img {
+        width: 60px !important;
+        height: 60px !important;
+        margin-right: 0 !important;
+    }
+
+    /* Şarkı Detayları */
+    .bar-details {
+        align-items: flex-start !important;
+    }
+
+    #bar-title {
+        font-size: 1rem !important;
+        margin-bottom: 2px !important;
+    }
+    
+    #bar-artist {
+        font-size: 0.8rem !important;
+    }
+
+    /* Gizlenen Butonları Geri Getir */
+    .volume-controls, 
+    .time-info, 
+    .bar-extras, 
+    #shuffle-btn, 
+    #prev-btn, 
+    #next-btn, 
+    #repeat-btn,
+    .default-bar-icon {
+        display: flex !important;
+    }
+    
+    /* İlerleme Çubuğu ve Süreleri Geri Getir */
+    .progress-container {
+        position: static !important; /* Absolute olmasın */
+        height: auto !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+        margin-top: 5px !important;
+    }
+
+    #current-time, #duration {
+        display: block !important;
+    }
+
+    #seek-bar {
+        position: static !important;
+        height: 4px !important;
+        opacity: 1 !important;
+        background: rgba(255,255,255,0.2) !important;
+    }
+    
+    /* Slider Topunu Geri Getir */
+    #seek-bar::-webkit-slider-thumb {
+        width: 12px !important;
+        height: 12px !important;
+        opacity: 1 !important;
+    }
+
+    /* 4. LİSTE GÖRÜNÜMÜ (Tabloyu Geri Getir) */
+    .song-list-table thead {
+        display: table-header-group !important; /* Başlıkları aç */
+    }
+    
+    .song-list-table tbody {
+        display: table-row-group !important;
+    }
+
+    .song-row {
+        display: table-row !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        padding: 0 !important;
+    }
+
+    .song-row td {
+        display: table-cell !important;
+        padding: 12px 10px !important;
+        vertical-align: middle !important;
+        border: none !important;
+    }
+
+    /* Mobilde gizlediğimiz sütunları aç */
+    .song-row td:first-child, /* Sıra no */
+    .song-row td:nth-child(3) /* Sanatçı */ {
+        display: table-cell !important;
+    }
+
+    /* Mobil için yaptığımız özel flex yapıyı iptal et */
+    .song-title-cell {
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    .song-title-cell img {
+        width: 40px !important;
+        height: 40px !important;
+        margin-right: 15px !important;
+    }
+
+    /* Action Butonları (Oynat, Sil vs.) */
+    .song-row td:last-child {
+        width: auto !important;
+        display: table-cell !important;
+        text-align: right !important;
+    }
+}
+
+/* Masaüstünde mobil ayarlar butonunu gizle */
+.mobile-settings-btn {
+    display: none;
+}

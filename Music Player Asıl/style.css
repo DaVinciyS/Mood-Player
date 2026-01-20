@@ -1,0 +1,2346 @@
+/* =========================================
+   MOOD PLAYER PRO - FINAL STYLE.CSS
+   ========================================= */
+
+/* --- TEMEL AYARLAR & DEĞİŞKENLER --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --primary-color: #5c20f7;
+    --hover-color: #7a45ff;
+    --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --text-color: #ffffff;
+    --text-muted: #b3b3b3;
+    --player-height: 90px;
+}
+
+/* =========================================
+   ÖZEL SCROLLBAR (KAYDIRMA ÇUBUĞU)
+   ========================================= */
+
+/* Tüm site için kaydırma çubuğu genişliği */
+::-webkit-scrollbar {
+    width: 8px;  /* Dikey çubuk inceliği */
+    height: 8px; /* Yatay çubuk inceliği */
+}
+
+/* Çubuğun arkasındaki yol (Track) - Şeffaf olsun */
+::-webkit-scrollbar-track {
+    background: transparent; 
+}
+
+/* Çubuğun kendisi (Thumb) - Tutamaç */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2); /* Hafif silik beyaz */
+    border-radius: 10px; /* Yuvarlatılmış köşeler */
+    border: 2px solid transparent; /* Kenarlardan biraz boşluk bırakır */
+    background-clip: content-box;
+}
+
+/* Üstüne gelince (Hover) - Rengi değişsin */
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color); /* Temanın rengi neyse o olsun (Mor/Yeşil vs) */
+    border: 0; /* Üstüne gelince tam dolsun */
+}
+
+/* Firefox için uyumluluk */
+* {
+    scrollbar-width: thin; /* İnce olsun */
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-color);
+    height: 100vh;
+    overflow: hidden; /* Sayfanın tamamı kaymasın, sadece içerik kaysın */
+    display: flex;
+    flex-direction: column;
+}
+
+.app-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* --- SIDEBAR (KAYDIRILABİLİR VERSİYON) --- */
+.sidebar {
+    width: 260px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    border-right: var(--glass-border);
+    
+    /* Yükseklik ekran kadar olsun */
+    height: 100vh; 
+    
+    /* İÇERİK SIĞMAZSA AŞAĞI KAYDIRILSIN */
+    overflow-y: auto; 
+    overflow-x: hidden; /* Yanlamasına kaymasın */
+    
+    /* Player bar'ın altında kalmaması için alttan boşluk */
+    padding: 20px 20px 120px 20px; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+/* Sidebar'ın kendi özel ince kaydırma çubuğu olsun */
+.sidebar::-webkit-scrollbar {
+    width: 4px; /* Çok ince ve zarif */
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+.logo {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(92, 32, 247, 0.6);
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.menu-item:hover, .menu-item.active {
+    background: var(--glass-bg);
+    color: #fff;
+    border-left: 3px solid var(--primary-color);
+}
+
+/* Playlist Listesi (Sidebar İçinde) */
+.playlist-section {
+    /* Esnek olsun ama büzüşmesin */
+    display: flex;
+    flex-direction: column;
+    
+    /* KRİTİK: Ekran kısalsa bile bu alanın kapanmasına izin verme */
+    flex-shrink: 0; 
+    
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 15px;
+    margin-top: 10px;
+    
+    /* İçeriği serbest bırak, sidebar kaydıracak zaten */
+    overflow: visible;
+    height: auto;
+}
+
+.playlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.playlist-header h3 {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+#create-playlist-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+#create-playlist-btn:hover {
+    color: #fff;
+    transform: scale(1.1);
+}
+
+#user-playlists {
+    list-style: none;
+    overflow: visible; /* Kendi scrollbar'ı olmasın */
+    padding-bottom: 10px;
+}
+
+/* Scrollbar Özelleştirme */
+#user-playlists::-webkit-scrollbar { width: 5px; }
+#user-playlists::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 5px; }
+
+.playlist-item {
+    padding: 10px 10px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 0.2s;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.playlist-item img {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.playlist-item:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+    padding-left: 15px;
+}
+
+/* --- MAIN CONTENT (ANA İÇERİK) --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.top-bar {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    flex-shrink: 0; /* Küçülmesini engelle */
+}
+
+.search-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    width: 300px;
+    border: var(--glass-border);
+    transition: 0.3s;
+}
+
+.search-container input {
+    background: none;
+    border: none;
+    outline: none;
+    margin-left: 10px;
+    width: 100%;
+    color: #fff;
+}
+
+.search-container input::placeholder { color: rgba(255,255,255,0.5); }
+.user-greeting { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.avatar {
+    width: 35px; height: 35px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 0 10px rgba(92, 32, 247, 0.5);
+}
+
+/* --- VIEW CONTAINER (DEĞİŞEN ALAN) --- */
+.view-container {
+    flex: 1;
+    overflow-y: auto; /* Sadece burası scroll olsun */
+    padding: 30px;
+    /* Player Bar'ın altında kalmaması için ekstra boşluk */
+    padding-bottom: 120px; 
+}
+
+/* Home Wrapper */
+.home-wrapper {
+    text-align: center;
+    margin-top: 50px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Kutuların Kendisi */
+.upload-box {
+    /* Eski ayarları sıfırla */
+    margin: 0 !important; 
+    max-width: none !important;
+    
+    /* Yeni Boyutlandırma */
+    aspect-ratio: 1 / 1; /* En ve boyu eşit tut (KARE YAPAR) */
+    width: 100%;       /* Bulunduğu sütunu tamamen kapla */
+    height: auto;      /* Aspect ratio'ya göre yükseklik al */
+    
+    /* İçerik Ortalama */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    /* Görsellik */
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Yaylanma efekti */
+}
+
+
+/* Izgara Yapısı */
+.quick-actions-grid {
+    display: grid;
+    /* Kutular en az 160px olsun, ekrana göre yan yana sığsın */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+    gap: 20px;
+    margin-bottom: 40px;
+}
+/* Hover Efekti */
+.upload-box:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--primary-color);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+/* İçindeki İkon */
+.upload-box i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    transition: 0.3s;
+}
+
+/* İçindeki Yazı */
+.upload-box h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    color: #fff;
+}
+/* Sadece ilk kutuyu (Yükle) hedefler */
+.quick-actions-grid .upload-box:first-child {
+    /* 2 Sütun yer kaplasın */
+    grid-column: span 2; 
+    
+    /* Kare olma zorunluluğunu kaldır, yatay dikdörtgen yap */
+    aspect-ratio: auto; 
+    height: 140px; /* Sabit bir yükseklik */
+    
+    /* Biraz daha belirgin olsun */
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Yükle kutusunun içindeki ikonu biraz büyütelim */
+.quick-actions-grid .upload-box:first-child i {
+    font-size: 3rem;
+}
+
+/* Yükle kutusunun yazısını biraz büyütelim */
+.quick-actions-grid .upload-box:first-child h3 {
+    font-size: 1.1rem;
+}
+
+
+
+
+
+/* Playlist View */
+.playlist-view-header {
+    display: flex;
+    align-items: end;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.playlist-cover-art {
+    width: 180px; height: 180px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #444, #222);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 4rem; color: rgba(255, 255, 255, 0.1);
+    border: var(--glass-border);
+}
+
+.playlist-actions {
+    margin-bottom: 25px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.play-all-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(92, 32, 247, 0.6);
+    display: flex; justify-content: center; align-items: center;
+    transition: 0.2s;
+}
+
+.play-all-btn:hover { transform: scale(1.1); background: var(--hover-color); }
+
+.song-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.song-list-table th {
+    text-align: left;
+    color: var(--text-muted);
+    border-bottom: var(--glass-border);
+    padding: 15px 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.song-list-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    vertical-align: middle;
+}
+
+.song-row {
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+}
+
+.song-row:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.song-row.active-song .song-title-cell {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.song-row.active-song img {
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.song-title-cell img {
+    width: 40px; height: 40px;
+    border-radius: 5px;
+    margin-right: 15px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-left: 10px;
+    transition: 0.2s;
+    opacity: 0.7;
+}
+
+.action-btn:hover { opacity: 1; transform: scale(1.2); }
+.btn-delete { color: #e74c3c; } 
+.btn-add { color: #2ecc71; }
+
+/* =========================================
+   MUSIC PLAYER BAR (ÖNEMLİ DÜZELTMELER)
+   ========================================= */
+.music-player-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    background: rgba(15, 12, 41, 0.95); /* Biraz daha opak yapıldı */
+    backdrop-filter: blur(20px);
+    border-top: var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+    
+    /* Z-Index Fix: Her şeyin üstünde olması garanti edildi */
+    z-index: 10000 !important;
+    pointer-events: auto !important; /* Tıklamalar AÇIK */
+}
+
+.bar-song-info {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    gap: 15px;
+}
+
+/* --- PLAYER BAR ALBÜM KAPAĞI --- */
+.bar-img {
+    width: 60px; 
+    height: 60px;
+    border-radius: 8px; /* ARTIK KARE (Hafif yumuşak köşeli) */
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Çerçeveyi incelttim, daha zarif durur */
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Hafif gölge ekledik */
+    
+}
+
+
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.bar-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.bar-details {
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.bar-details h4 {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+
+.bar-details p { font-size: 0.8rem; color: var(--text-muted); }
+
+/* Kayan Yazı Animasyonu */
+.scroll-text {
+    padding-left: 100%;
+    animation: marquee 12s linear infinite;
+}
+@keyframes marquee {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+#bar-like-btn {
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    pointer-events: auto; /* Garanti */
+}
+
+#bar-like-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.1);
+}
+
+/* Kontroller */
+.bar-controls {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.control-buttons button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    pointer-events: auto; /* Garanti */
+    position: relative;
+    z-index: 10001; /* Barın içinde de en üstte */
+}
+
+.control-buttons button:hover { color: var(--primary-color); }
+
+.control-buttons .circle-btn {
+    background: #fff;
+    color: #000;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.control-buttons .circle-btn:hover {
+    transform: scale(1.1);
+    background: var(--primary-color);
+    color: #fff;
+}
+
+#repeat-badge {
+    position: absolute;
+    top: -5px; right: -8px;
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.6rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Range Slider (Ses ve Süre Çubuğu) */
+input[type="range"] {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    accent-color: var(--primary-color);
+    border-radius: 2px;
+    -webkit-appearance: none;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 10002;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    transition: 0.2s;
+    cursor: grab;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.5); }
+
+/* --- BAR EXTRAS (SAĞ TARAF DÜZELTME) --- */
+
+.bar-extras {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end; /* En sağa yasla */
+    align-items: center;
+    gap: 15px;
+    /* Sağdan biraz boşluk bırakalım ki ekrana yapışmasın */
+    padding-right: 20px; 
+}
+
+.volume-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* BURASI ÖNEMLİ: Ses çubuğuna sabit ve küçük bir genişlik veriyoruz */
+    width: 125px; 
+    position: relative;
+    z-index: 10002;
+}
+
+/* --- PREMIUM SES ÇUBUĞU (MAKYAJLI VERSİYON) --- */
+#volume-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px; /* İdeal kalınlık */
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    /* 1. ZEMİN (BOŞ KISIM) - Daha koyu ve cam gibi */
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5); /* İçeri gömük hissi */
+    
+    /* 2. DOLU KISIM (BİZİM GRADYANIMIZ) */
+    /* Soldan sağa koyu mordan açık mora doğru parlasın */
+    background-image: linear-gradient(90deg, var(--primary-color), #a066ff);
+    background-size: 0% 100%; /* JS bunu güncelleyecek */
+    background-repeat: no-repeat;
+}
+
+/* YUVARLAK TUTAMAÇ (THUMB) */
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #fff;
+    
+    /* 3. NEON PARLAMA EFEKTİ */
+    box-shadow: 0 0 10px var(--primary-color), 0 0 20px rgba(160, 102, 255, 0.5);
+    
+    cursor: grab;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Yaylanma efekti */
+    margin-top: 0;
+    
+    /* Başlangıçta hafif küçük dursun */
+    transform: scale(0.9);
+}
+
+/* Üzerine gelince veya tutunca efektler */
+#volume-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.2); /* Büyüsün */
+    box-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color); /* Daha çok parlasın */
+}
+
+#volume-slider:active::-webkit-slider-thumb {
+    cursor: grabbing;
+    transform: scale(1.4); /* Basılı tutarken iyice büyüsün */
+}
+
+.hidden { display: none !important; }
+
+
+/* --- BUTON ARKA PLAN TEMİZLİĞİ (ACİL) --- */
+
+#add-to-playlist-btn,
+#mute-btn {
+    background-color: transparent !important; /* Arka planı şeffaf yap */
+    background: none !important;
+    border: none !important;            /* Kenarlık varsa sil */
+    box-shadow: none !important;        /* Gölge varsa sil */
+    color: #fff !important;             /* İkonun rengini beyaz yap */
+}
+
+/* Üzerine gelince hafif efekt verelim ki tıklanabilir olduğu belli olsun */
+#add-to-playlist-btn:hover,
+#mute-btn:hover {
+    color: var(--primary-color) !important;
+    transform: scale(1.1);
+}
+
+/* --- SÜRÜKLE & BIRAK (DRAG & DROP) --- */
+.song-row[draggable="true"] {
+    cursor: grab; /* Tutulabilir işareti */
+}
+
+.song-row.dragging {
+    opacity: 0.5; /* Sürüklenirken şeffaflaşsın */
+    background: rgba(92, 32, 247, 0.3); /* Morumsu bir renk alsın */
+    border: 2px dashed #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.song-row.drag-over {
+    border-bottom: 2px solid var(--primary-color); /* Nereye bırakılacağını göster */
+}
+
+/* --- AUDIO VISUALIZER (GÖRSELLEŞTİRİCİ) --- */
+#visualizer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* İçeriklerin arkasında kalsın */
+    pointer-events: none; /* Tıklamayı engellemesin */
+    opacity: 0.3; /* Çok göz yormasın, hafif görünsün */
+}
+
+/* Player Bar'ın arka planını biraz daha şeffaflaştıralım ki arkası görünsün */
+.music-player-bar {
+    background: rgba(15, 12, 41, 0.85) !important; /* Opaklığı azalttık */
+    overflow: hidden; /* Dışarı taşan çizgileri gizle */
+}
+
+/* --- AYARLAR MENÜSÜ STİLLERİ --- */
+.theme-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: 0.2s;
+}
+
+.theme-circle:hover {
+    transform: scale(1.2);
+    border-color: #fff;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* --- SIDEBAR (TAM KAYDIRMA ÇÖZÜMÜ) --- */
+.sidebar {
+    width: 260px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    border-right: var(--glass-border);
+    
+    /* Yükseklik kesinlikle ekran boyu olsun */
+    height: 100vh; 
+    max-height: 100vh;
+    
+    /* İÇERİK SIĞMAZSA AŞAĞI KAYDIRILSIN */
+    overflow-y: auto !important; /* Kaydırmayı zorla */
+    overflow-x: hidden;
+    
+    /* Player bar'ın altında kalmaması için alttan BOLCA boşluk */
+    padding: 20px 20px 150px 20px; 
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+    flex-shrink: 0; /* Ekran küçülse de sidebar daralmasın */
+}
+
+/* --- ARAMA SONUÇLARI (GRID TASARIM) --- */
+.search-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.search-grid {
+    display: grid;
+    /* Ekran genişliğine göre otomatik sığdır (min 160px) */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+    gap: 20px;
+    padding-bottom: 100px;
+}
+
+.song-card {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    position: relative;
+    group: hover; /* Hover grubu */
+}
+
+.song-card:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-5px); /* Hafif yukarı kalksın */
+}
+
+.card-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1/1; /* Kare olmasını zorla */
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Kartın üzerindeki Oynat butonu (Sadece hoverda görünsün) */
+.card-play-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: 0.3s;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+}
+
+.song-card:hover .card-play-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3px;
+    color: #fff;
+}
+
+.card-artist {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* --- SAĞ TIK MENÜSÜ (CONTEXT MENU) --- */
+.context-menu {
+    position: absolute;
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 5px 0;
+    min-width: 150px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    z-index: 99999; /* En üstte durmalı */
+    animation: fadeIn 0.1s ease;
+}
+
+.ctx-item {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.ctx-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 20px; /* Hafif sağa kayma efekti */
+}
+
+/* Menü ekrandan taşarsa diye (Opsiyonel güvenlik) */
+.context-menu.hidden {
+    display: none;
+}
+
+#ambient-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5; /* Her şeyin en arkasında */
+    background: radial-gradient(circle at center, #1e1e1e, #000); /* Varsayılan */
+    transition: background 1s ease-in-out; /* Renk değişimi 1 saniye sürsün (Yumuşak geçiş) */
+    opacity: 0.6; /* Çok göz almasın, hafif dursun */
+    filter: blur(20px); /* Renkler birbirine iyice karışsın */
+}
+
+/* --- KISAYOL REHBERİ --- */
+.shortcut-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shortcut-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 10px;
+}
+
+/* Klavye Tuşu Tasarımı */
+kbd {
+    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #b4b4b4;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.2), 0 2px 0 0 rgba(255,255,255,0.7) inset;
+    color: #333;
+    display: inline-block;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 1;
+    padding: 5px 8px;
+    white-space: nowrap;
+    font-family: monospace;
+}
+
+/* --- YENİ ANA SAYFA (DASHBOARD) --- */
+.dashboard-wrapper {
+    padding-bottom: 50px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* 1. İstatistik Kutuları */
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-box {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.stat-info h3 { font-size: 1.5rem; margin: 0; }
+.stat-info p { margin: 0; color: #aaa; font-size: 0.8rem; }
+
+/* 2. Günün Şarkısı Kartı (Hero Section) */
+.hero-card {
+    background: linear-gradient(135deg, rgba(92, 32, 247, 0.4), rgba(0,0,0,0.6));
+    border-radius: 15px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Arka plan süsü */
+.hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 200px; height: 200px;
+    background: var(--primary-color);
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.hero-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    z-index: 1;
+    flex: 1;
+}
+
+.hero-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.hero-btn {
+    margin-top: 20px;
+    padding: 10px 25px;
+    background: #fff;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hero-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
+}
+
+/* --- SAĞ TIK ALT MENÜSÜ (SUBMENU) --- */
+
+/* 1. Kapsayıcı Öğe */
+.ctx-item.has-submenu {
+    position: relative; /* Alt menüyü buna göre konumlandıracağız */
+    display: flex;
+    justify-content: space-between; /* Ok işaretini sağa it */
+    align-items: center;
+    overflow: visible; /* İçinden çıkan menüyü kesmesin */
+}
+
+/* 2. Gizli Alt Menü Kutusu */
+.ctx-submenu {
+    display: none; /* Başlangıçta gizli */
+    position: absolute;
+    left: 100%; /* Ana menünün tam sağında başla */
+    top: -5px;  /* Biraz yukarıdan hizala */
+    width: 160px;
+    background: rgba(30, 30, 30, 0.98);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 5px 0;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    margin-left: 10px; /* Ana menüden biraz ayrı dursun */
+    
+    /* Animasyon */
+    animation: fadeIn 0.2s ease;
+}
+
+/* 3. Hover Olayı: Üstüne gelince göster */
+.ctx-item.has-submenu:hover .ctx-submenu {
+    display: block;
+}
+
+/* 4. Alt menüdeki ok işaretinin rengi değişsin */
+.ctx-item.has-submenu:hover .fa-chevron-right {
+    color: #fff !important;
+}
+/* --- GÖRÜNMEZ KÖPRÜ (HOVER TUNNEL) --- */
+/* Bu kod, menü kapanma sorununu çözer */
+
+.ctx-item.has-submenu::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    
+    /* Menünün sağ tarafından 20px dışarı taş */
+    /* Bu, aradaki 10px boşluğu ve fazlasını kapsar */
+    right: -20px; 
+    
+    width: 30px; /* Köprünün genişliği */
+    height: 100%; /* Köprünün yüksekliği */
+    background: transparent; /* Görünmez olsun */
+    /* background: red; <-- Test etmek istersen bunu açıp kırmızıyı görebilirsin :) */
+}
+
+/* Eğer ana menü yukarı açıldıysa, alt menüyü de yukarı hizala */
+.context-menu.opens-up .ctx-submenu {
+    top: auto;
+    bottom: -5px; /* Aşağıdan yukarı doğru hizala */
+}
+
+
+/* --- COMPACT YATAY ŞERİT (GÜNCELLENMİŞ) --- */
+
+.horizontal-scroll-container {
+    display: flex;
+    gap: 12px; /* Aradaki boşluğu kıstık */
+    overflow-x: auto;
+    padding: 10px 5px 20px 5px; /* Scrollbar için alttan biraz pay */
+    scroll-behavior: smooth;
+    
+    /* YENİ: Kaydırınca hizalı dursun (Mıknatıs etkisi) */
+    scroll-snap-type: x mandatory; 
+}
+
+.mini-song-card {
+    /* Boyutları küçülttük */
+    min-width: 110px; 
+    width: 110px;
+    
+    background: transparent; /* Arka planı şeffaf yaptık, daha ferah dursun */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+    
+    /* Mıknatıs hizalaması */
+    scroll-snap-align: start; 
+}
+
+.mini-song-card:hover {
+    transform: translateY(-5px); 
+}
+
+/* Resim Tasarımı */
+.mini-cover {
+    width: 100%;
+    aspect-ratio: 1/1; /* Tam kare */
+    border-radius: 12px; /* Köşeleri daha yumuşak */
+    object-fit: cover;
+    margin-bottom: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Resme gölge verdik, havada dursun */
+    transition: 0.2s;
+}
+
+.mini-song-card:hover .mini-cover {
+    box-shadow: 0 8px 15px rgba(92, 32, 247, 0.4); /* Hover'da mor parlasın */
+}
+
+/* Yazı Tasarımı */
+.mini-title {
+    font-size: 0.8rem; /* Yazıyı küçülttük */
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+    text-align: center; /* Ortala */
+}
+
+.mini-artist {
+    font-size: 0.7rem; /* Sanatçıyı iyice küçülttük */
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center; /* Ortala */
+}
+
+/* --- SENİN LİSTELERİN VİTRİNİ --- */
+.playlist-grid {
+    display: grid;
+    /* Ekran genişliğine göre otomatik sığdır (min 150px) */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+    gap: 20px;
+    margin-bottom: 30px;
+    animation: fadeIn 0.5s ease;
+}
+
+.home-playlist-card {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 12px;
+    transition: 0.3s;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    group: hover;
+}
+
+.home-playlist-card:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.pl-card-img {
+    width: 100%;
+    aspect-ratio: 1/1; /* Kare olsun */
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.pl-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 3px;
+}
+
+.pl-card-info {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Kartın üzerindeki Play Butonu */
+.pl-card-play-btn {
+    position: absolute;
+    bottom: 70px; /* Resmin sağ altına denk getirelim */
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    opacity: 0; /* Başta gizli */
+    transform: translateY(10px);
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.home-playlist-card:hover .pl-card-play-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- YENİLENMİŞ AYARLAR MENÜSÜ STİLLERİ --- */
+
+/* Modalın kendisi: Ekrana sığsın ve kaydırılabilsin */
+.settings-modal-content {
+    width: 450px;
+    max-width: 90%;
+    /* Maksimum yükseklik verip içini kaydırılabilir yapıyoruz */
+    max-height: 85vh; 
+    overflow-y: auto; 
+    padding: 0; /* İç boşluğu sıfırladık, içeride vereceğiz */
+    background: rgba(25, 25, 35, 0.98); /* Biraz daha koyu zemin */
+    text-align: left;
+}
+
+.settings-title {
+    padding: 20px;
+    margin: 0;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 1.2rem;
+}
+
+/* SEKMELER (TABS) */
+.settings-tabs {
+    display: flex;
+    background: rgba(0,0,0,0.2);
+    padding: 5px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #aaa;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover { color: #fff; }
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    background: rgba(255,255,255,0.05);
+}
+
+/* İÇERİK ALANI */
+.tab-content {
+    display: none; /* Hepsi gizli */
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block; /* Sadece aktif olan görünür */
+}
+
+/* GRUPLAMA */
+.setting-group { margin-bottom: 25px; }
+
+.group-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* PROFİL ALANI */
+.profile-edit-area {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.avatar-upload {
+    position: relative;
+    width: 70px; height: 70px;
+    cursor: pointer;
+}
+
+.avatar-upload img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.edit-icon {
+    position: absolute; bottom: 0; right: 0;
+    background: var(--primary-color);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.name-edit { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.name-edit input {
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+}
+
+.save-profile-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* SES AYARLARI */
+.slider-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/* EKOLAYZER */
+.eq-container {
+    display: flex;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.eq-band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+/* Dikey Slider CSS Hack */
+input[type=range][orient=vertical] {
+    writing-mode: bt-lr; /* IE/Edge */
+    -webkit-appearance: slider-vertical; /* Webkit */
+    width: 8px;
+    height: 80px;
+    padding: 0 5px;
+}
+
+/* SİSTEM BUTONLARI */
+.full-width-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.icon-btn { background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; gap: 10px; }
+.icon-btn:hover { background: rgba(255,255,255,0.2); }
+
+.danger-btn { background: rgba(231, 76, 60, 0.2); color: #e74c3c; margin-top: 10px; }
+.danger-btn:hover { background: #e74c3c; color: #fff; }
+
+.backup-buttons { display: flex; gap: 10px; }
+.backup-btn {
+    flex: 1;
+    padding: 10px;
+    background: #34495e;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.backup-btn:hover { background: #2c3e50; }
+
+.modal-footer {
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* --- DÜZELTMELER (FIX PACK) --- */
+
+/* 1. Görünmeyen Siyah Butonları Beyaz Yap */
+.action-btn {
+    background: transparent;
+    border: none;
+    color: #fff !important; /* Zorla beyaz yap */
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    margin: 0 5px;
+    transition: 0.2s;
+}
+
+.action-btn:hover {
+    color: var(--primary-color) !important;
+    transform: scale(1.1);
+}
+
+/* 2. Ayarlar Renk Seçimi (Yan Yana Hizalama) */
+.theme-options {
+    display: flex;
+    flex-direction: row; /* Yan yana diz */
+    gap: 15px; /* Aralarına boşluk koy */
+    justify-content: flex-start; /* Sola yasla */
+    flex-wrap: wrap; /* Sığmazsa aşağı geçsin */
+}
+
+.theme-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.2);
+    transition: transform 0.2s;
+}
+
+.theme-circle:hover {
+    transform: scale(1.2);
+    border-color: #fff;
+}
+
+/* --- EQ KAPALI MODU (DISABLED) --- */
+.disabled-area {
+    opacity: 0.4; /* Sönükleştir */
+    pointer-events: none; /* Tıklamayı engelle */
+    filter: grayscale(100%); /* Siyah beyaz yap */
+    transition: all 0.3s ease;
+}
+
+/* =========================================
+   ÇALMA LİSTESİ KAPAK DÜZENLEMESİ
+   ========================================= */
+
+/* Resmin duracağı kutu (Çerçeve) */
+.pl-card-img-wrapper {
+    width: 100%;
+    /* Kare olması için en/boy oranı */
+    aspect-ratio: 1 / 1; 
+    border-radius: 12px;
+    overflow: hidden;
+    /* İçindekileri üst üste bindirmek için relative yapıyoruz */
+    position: relative; 
+    
+    /* --- VARSAYILAN HAVALI GÖRÜNÜM --- */
+    /* Senin ana renginle mavi arasında çapraz bir geçiş */
+    background: linear-gradient(135deg, var(--primary-color), #3498db);
+    /* Ortadaki ikon için hizalama */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Varsayılan olarak ortada duracak ikon */
+.default-pl-icon {
+    font-size: 4rem;
+    /* Yarı saydam beyaz */
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 1; /* En altta duracak */
+}
+
+/* Gerçek kapak resmi (Eğer varsa) */
+.pl-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Çerçevenin üzerine tam oturması için absolute */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2; /* İkonun üstüne çıkacak */
+    /* Başlangıçta gizli olacak, JS ile açacağız */
+    display: none; 
+    transition: opacity 0.3s ease;
+}
+
+/* Sidebar'daki (Yan menüdeki) küçük resimler için ayar */
+.sidebar-pl-img {
+    width: 30px; height: 30px; 
+    border-radius: 4px; vertical-align: middle; margin-right: 10px;
+    /* Eğer resim yoksa varsayılan bir renk */
+    background-color: var(--primary-color); 
+    object-fit: cover;
+}
+
+/* =========================================
+   PLAYER BAR KAPAK DÜZENLEMESİ (SOL ALT)
+   ========================================= */
+
+.bar-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px; /* Köşeleri yumuşat */
+    overflow: hidden;
+    position: relative; /* İçindekileri üst üste bindirmek için */
+    
+    /* VARSAYILAN HAVALI ARKA PLAN */
+    background: linear-gradient(135deg, var(--primary-color), #8e44ad);
+    
+    /* İkonu ortalamak için */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Arkadaki Müzik İkonu */
+.default-bar-icon {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.4); /* Hafif silik */
+    z-index: 1;
+}
+
+/* Gerçek Kapak Resmi */
+#bar-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2; /* İkonun üstüne binecek */
+    
+    /* BAŞLANGIÇTA GİZLİ OLSUN (Ki gradient görünsün) */
+    display: none; 
+}
+
+/* =========================================
+   ARKAPLAN YAĞMUR EFEKTİ (GÜÇLENDİRİLMİŞ) 🌧️
+   ========================================= */
+
+#rain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Tıklamayı engellemesin */
+    
+    /* ÖNEMLİ: Z-index'i artırdık. 
+       -5 yerine -1 yaptık ki diğer arka planların önüne geçsin, 
+       ama yazıların (0) arkasında kalsın. */
+    z-index: -1; 
+    
+    background-image: url('https://images.unsplash.com/photo-1496034663057-6245f11be793?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    
+    /* GÜÇLENDİRME AYARLARI */
+    /* 1. Screen modu: Siyahları şeffaf yapar, beyaz damlaları parlatır */
+    mix-blend-mode: screen; 
+    
+    /* 2. Kontrastı köklüyoruz ki damlalar netleşsin */
+    filter: grayscale(100%) contrast(1.5) brightness(0.35);
+    
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+/* Yağmur açılınca */
+body.raining #rain-overlay {
+    opacity: 0.6; 
+}
+
+/* =========================================
+   PLAYER BAR - UYKU MODU (FİXLENDİ 🛠️) 🌙
+   ========================================= */
+
+/* 1. KRİTİK AYAR: Menünün barın dışına taşabilmesi için */
+.music-player-bar, 
+.bar-extras, 
+.sleep-container {
+    overflow: visible !important; 
+}
+
+/* Kapsayıcı */
+.sleep-container {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    position: relative; /* Popup buna göre konumlanacak */
+}
+
+/* 2. DÜZELTME: Butonun arka planını şeffaf yap */
+#sleep-timer-btn {
+    background: transparent; /* Beyazlığı sildik */
+    border: none;
+    color: rgba(255, 255, 255, 0.7); /* Diğer ikonlarla uyumlu gri-beyaz */
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    position: relative;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#sleep-timer-btn:hover {
+    color: #fff;
+    transform: scale(1.1); /* Hafif büyüme efekti */
+}
+
+/* Aktif olduğunda (Süre sayarken) */
+#sleep-timer-btn.active {
+    color: #f1c40f;
+    text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+}
+
+/* Süre sayacı (Rozet) */
+#sleep-badge {
+    position: absolute;
+    top: -4px;
+    right: 0px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.6rem;
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: bold;
+    pointer-events: none; /* Tıklamayı engelleme */
+}
+#sleep-badge.hidden { display: none; }
+
+/* AÇILIR MENÜ (POPUP) */
+.sleep-popup {
+    position: absolute;
+    /* Butonun tam üstüne, barın dışına çıkacak şekilde */
+    bottom: 45px; 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    width: 200px; /* Genişliği artırdık */
+    background: rgba(20, 20, 20, 0.98); /* Daha opak, okunsun */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 12px;
+    
+    /* Gölge ve Z-index */
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    z-index: 99999; /* Her şeyin üstünde */
+    
+    /* Animasyon */
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+}
+
+.sleep-popup.hidden {
+    opacity: 0;
+    visibility: hidden;
+    bottom: 30px; /* Aşağı kayarak kaybolsun */
+    pointer-events: none;
+}
+
+/* Küçük ok işareti (Menünün altındaki üçgen) */
+.sleep-popup::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: rgba(20, 20, 20, 0.98);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sleep-popup h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    color: #aaa;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 8px;
+    font-weight: 500;
+}
+
+.timer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.timer-grid button {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid transparent;
+    color: #ddd;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.timer-grid button:hover { 
+    background: var(--primary-color); 
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+}
+
+.cancel-timer-btn {
+    width: 100%;
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+.cancel-timer-btn:hover { 
+    background: #e74c3c; 
+    color: #fff; 
+}
+
+/* =========================================
+   MODERN SEEK BAR (GRADIENT DESTEKLİ) 🎚️
+   ========================================= */
+
+#seek-bar {
+    -webkit-appearance: none; /* Varsayılan tipi sıfırla */
+    appearance: none;
+    width: 100%;
+    height: 6px; /* Çubuk kalınlığı */
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    
+    /* Başlangıç rengi (JS bunu ezecek ama dursun) */
+    background: rgba(255, 255, 255, 0.1); 
+    transition: height 0.2s; /* Üzerine gelince hafif kalınlaşsın */
+}
+
+/* Üzerine gelince çubuk biraz kalınlaşsın (UX) */
+#seek-bar:hover {
+    height: 8px;
+}
+
+/* Tutamaç (Thumb) Tasarımı - Webkit (Chrome/Safari/Edge) */
+#seek-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #fff; /* Beyaz top */
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* Parlama efekti */
+    transition: transform 0.2s, background 0.2s;
+    margin-top: 0px; /* Hizalama */
+}
+
+/* Tutamaç üzerine gelince */
+#seek-bar::-webkit-slider-thumb:hover {
+    transform: scale(1.3); /* Biraz büyüsün */
+    background: #9258b1; /* Sarı olsun */
+}
+
+/* Firefox için Thumb */
+#seek-bar::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* =========================================
+   DİNAMİK SAHNELER (LIVE WALLPAPERS) 🎬
+   ========================================= */
+
+#dynamic-scene-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Renkli arkaplanın önünde, yağmurun arkasında */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Sahne geçişi yumuşak olsun */
+    transition: opacity 0.5s ease-in-out, background-image 0.5s ease-in-out;
+    opacity: 0; /* Başlangıçta gizli */
+}
+
+/* Sahne Seçim Izgarası */
+.scene-content {
+    max-width: 700px; /* Biraz geniş olsun */
+    background: rgba(20, 20, 20, 0.95);
+    backdrop-filter: blur(15px);
+}
+
+.scene-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.scene-card {
+    position: relative;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.scene-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.scene-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-color: var(--primary-color);
+}
+
+.scene-card:hover img {
+    transform: scale(1.1);
+}
+
+.scene-card.active {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
+.scene-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    color: white;
+    font-size: 0.8rem;
+    padding: 20px 5px 5px 5px;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0,0,0,1);
+}
+
+/* =========================================
+   PROFİL SAYFASI TASARIMI 👤
+   ========================================= */
+
+.profile-header {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.profile-big-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.profile-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: rgba(30, 30, 30, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+
+.stat-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.badge-container {
+    background: rgba(20, 20, 20, 0.6);
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.badge-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.badge-item {
+    background: rgba(255,255,255,0.05);
+    padding: 10px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+.badge-item.unlocked {
+    background: rgba(241, 196, 15, 0.1);
+    color: #f1c40f;
+    border-color: rgba(241, 196, 15, 0.3);
+    box-shadow: 0 0 10px rgba(241, 196, 15, 0.1);
+}
+
+/* =========================================
+   HEADER PROFİL TETİKLEYİCİSİ 👤
+   ========================================= */
+
+#header-profile-trigger {
+    cursor: pointer; /* El işareti çıksın */
+    padding: 5px 15px;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+#header-profile-trigger:hover {
+    background: rgba(255, 255, 255, 0.1); /* Hafif beyazlık */
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px); /* Hafif yukarı kalksın */
+}
+
+#header-profile-trigger:active {
+    transform: translateY(0); /* Tıklayınca geri insin */
+}
+
+/* MOOD PİXEL IZGARASI (BULLET JOURNAL TARZI) */
+.mood-tracker-container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.mood-grid-pixels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20px, 1fr)); /* Esnek kutular */
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.pixel {
+    aspect-ratio: 1; /* Kare olmaya zorla */
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    position: relative;
+}
+
+.pixel:hover {
+    transform: scale(1.2);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+/* Tooltip (Üzerine gelince tarih yazsın) */
+.pixel::after {
+    content: attr(data-date);
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+    z-index: 10;
+}
+.pixel:hover::after { opacity: 1; }
+
+/* Renk Kodları */
+.pixel.energetic { background: #f1c40f; box-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
+.pixel.sad { background: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.4); }
+.pixel.chill { background: #e67e22; box-shadow: 0 0 10px rgba(230, 126, 34, 0.4); }
+.pixel.focus { background: #9b59b6; box-shadow: 0 0 10px rgba(155, 89, 182, 0.4); }
+.pixel.mixed { background: #95a5a6; } /* Karışık/Bilinmeyen */
+
+/* İMZA SÖZ (MOTTO) ALANI ✒️ */
+.signature-quote-box {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-block;
+    border: 1px dashed transparent; /* Gizli sınır */
+}
+
+.signature-quote-box:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.signature-text {
+    font-family: 'Georgia', serif; /* Tırnaklı font (Edebiyat havası) */
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #ddd;
+    line-height: 1.4;
+}
+
+.signature-icon {
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    margin-left: 8px;
+    opacity: 0; /* Başta gizli */
+    transition: opacity 0.3s;
+}
+
+.signature-quote-box:hover .signature-icon {
+    opacity: 1; /* Üzerine gelince kalem çıksın */
+}
+
+/* =========================================
+   TOZLU RAFLAR (NOSTALJİ KARTI) 🕸️
+   ========================================= */
+.dusty-wrapper {
+    margin-top: 30px;
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+}
+
+.dusty-card {
+    background: linear-gradient(135deg, #3e2723, #5d4037); /* Ahşap/Eski kahve tonları */
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.dusty-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border-color: #d35400; /* Pas rengi parlama */
+}
+
+/* Eski görünmesi için resme sepia (sarartma) efekti */
+.dusty-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+    filter: sepia(0.6) grayscale(0.2); /* Eskitme filtresi */
+    transition: filter 0.5s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+.dusty-card:hover .dusty-img {
+    filter: sepia(0) grayscale(0); /* Üzerine gelince renkler canlansın */
+}
+
+.dusty-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #e6b0aa; /* Soluk pembe/krem yazı */
+    margin-bottom: 5px;
+}
+
+.dusty-info p {
+    margin: 0;
+    color: #a08580; /* Soluk kahve yazı */
+    font-size: 0.9rem;
+}
+
+.dusty-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.4);
+    color: #d35400;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+/* --- ÜST BAR VE PROFİL ALANI DÜZELTMESİ (MASAÜSTÜ) --- */
+
+/* 1. Üst Barı Düzenle: Arama solda, Profil sağda dursun */
+.top-bar {
+    display: flex;
+    justify-content: space-between; /* Öğeleri iki uca yasla */
+    align-items: center; /* Dikeyde ortala */
+    width: 100%;
+    padding: 10px 20px;
+}
+
+/* 2. Profil Kapsayıcısı: Yazı ve Resmi yan yana getir */
+.user-info {
+    display: flex;
+    align-items: center; /* Yazı ve resmi dikeyde ortala */
+    gap: 15px; /* Yazı ile resim arasındaki boşluk */
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05); /* İsteğe bağlı: Hafif bir arka plan */
+    padding: 8px 15px; /* İç boşluk */
+    border-radius: 30px; /* Kenarları yuvarlat */
+    transition: background 0.3s;
+}
+
+.user-info:hover {
+    background: rgba(255, 255, 255, 0.1); /* Üstüne gelince hafif parlasın */
+}
+
+/* 3. Yazı Alanı: Sağa yasla (Resmin solunda kalsın) */
+.user-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Yazıları sağa yasla */
+    text-align: right;
+}
+
+.user-text p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #aaa;
+}
+
+.user-text h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* 4. Profil Resmi: Boyutunu sabitle ve yuvarlak yap (EN ÖNEMLİ KISIM) */
+.user-info img {
+    width: 45px;      /* Genişlik sabit */
+    height: 45px;     /* Yükseklik sabit */
+    border-radius: 50%; /* Tam yuvarlak */
+    object-fit: cover;  /* Resim yamulmasın, kırpılsın */
+    border: 2px solid #5c20f7; /* Etrafına şık bir çerçeve (Mood Player moru) */
+}
+
